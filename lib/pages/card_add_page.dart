@@ -1,3 +1,4 @@
+import 'package:exam_demo/models/card_model.dart';
 import 'package:flutter/material.dart';
 
 class CardAddPage extends StatefulWidget {
@@ -8,8 +9,8 @@ class CardAddPage extends StatefulWidget {
 }
 
 class _CardAddPageState extends State<CardAddPage> {
-  late String cardNumber = "";
-  late String expirationDay = "";
+  CardModel cardModel = CardModel("", "", "");
+  late String cardType = '';
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +49,7 @@ class _CardAddPageState extends State<CardAddPage> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
-                      "visa".toUpperCase(),
+                      cardType,
                       style: TextStyle(color: Colors.white),
                     ),
                   ],
@@ -57,7 +58,7 @@ class _CardAddPageState extends State<CardAddPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      "$cardNumber",
+                      cardModel.cardNumber,
                       style: TextStyle(color: Colors.white, fontSize: 27),
                     ),
                     Row(
@@ -71,7 +72,7 @@ class _CardAddPageState extends State<CardAddPage> {
                           width: 10,
                         ),
                         Text(
-                          expirationDay,
+                          cardModel.expireDate,
                           style: TextStyle(color: Colors.white, fontSize: 20),
                         ),
                         SizedBox(
@@ -89,56 +90,77 @@ class _CardAddPageState extends State<CardAddPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Enter expiration date",
-                            style: TextStyle(
-                                fontSize: 30, fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Container(
-                        height: 50,
-                        child: TextField(
-                          style: TextStyle(color: Colors.black, fontSize: 30),
-                          onChanged: (text) {
-                            setState(() {
-                              cardNumber = text;
-                            });
-                          },
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Enter expiration date",
+                          style: TextStyle(
+                              fontSize: 30, fontWeight: FontWeight.bold),
                         ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Container(
-                        height: 50,
-                        width: 100,
-                        child: TextField(
-                          style: TextStyle(color: Colors.black, fontSize: 30),
-                          onChanged: (text) {
-                            setState(() {
-                              expirationDay = text;
-                            });
-                          },
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
 
+                    //card
+                    Container(
+                      height: 50,
+                      child: TextField(
+                        style: TextStyle(color: Colors.black, fontSize: 30),
+                        onChanged: (text) {
+                          setState(
+                            () {
+                              cardModel.cardNumber = text;
+                              if (cardModel.cardNumber.startsWith("5752")) {
+                                cardType = "Visa";
+                              }
+                              if (cardModel.cardNumber.startsWith("34")) {
+                                cardType = "Mastercard";
+                              }
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+
+                    //expiration date
+                    Container(
+                      height: 50,
+                      width: 100,
+                      child: TextField(
+                        style: TextStyle(color: Colors.black, fontSize: 30),
+                        onChanged: (text) {
+                          setState(() {
+                            cardModel.expireDate = text;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 250,
+                ),
                 Container(
+                  height: 50,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(10)),
                   child: MaterialButton(
                     onPressed: () {},
+                    child: Text(
+                      "Save",
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 )
               ],
