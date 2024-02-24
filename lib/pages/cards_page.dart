@@ -10,20 +10,36 @@ class CardsListPage extends StatefulWidget {
 }
 
 class _CardsListPageState extends State<CardsListPage> {
+
+
+
   var cards = [
-    CardModel("5272892091839232", "1126", "assets/images/ic_card_master.png"),
-    CardModel("5272892091839232", "1126", "assets/images/ic_card_master.png"),
-    CardModel("5272892091839232", "1126", "assets/images/ic_card_master.png"),
+    CardModel(
+      "5257892091839232",
+      "1126",
+    ),
+    CardModel(
+      "52572091839232",
+      "1126",
+    ),
+    CardModel(
+      "5257892091839232",
+      "1126",
+    ),
   ];
 
-  goCardAddPage() {
-    Navigator.of(context).push(
+  Future goCardAddPage() async {
+    Map<String, CardModel> newCard = await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (BuildContext contex) {
           return CardAddPage();
         },
       ),
     );
+
+    setState(() {
+      cards.add(newCard['data']!);
+    });
   }
 
   @override
@@ -43,12 +59,7 @@ class _CardsListPageState extends State<CardsListPage> {
             ),
             Expanded(
               child: ListView(
-                children: [
-                  cardItem(
-                    CardModel("5272892091839232", "1126",
-                        "assets/images/ic_card_master.png"),
-                  )
-                ],
+                children: cards.map((e) => cardItem(e)).toList(),
               ),
             ),
             Container(
@@ -86,7 +97,7 @@ class _CardsListPageState extends State<CardsListPage> {
         children: [
           Image(
             image: AssetImage(
-              model.cardImage,
+              model.cardImage(),
             ),
             height: 80,
             fit: BoxFit.cover,
@@ -94,18 +105,18 @@ class _CardsListPageState extends State<CardsListPage> {
           const SizedBox(
             width: 10,
           ),
-          const Column(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "**** **** **** 9275",
+                model.cardNumber,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
                 ),
               ),
               Text(
-                "11/25",
+                model.expireDate,
                 style: TextStyle(fontSize: 18),
               )
             ],
